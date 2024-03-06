@@ -31,7 +31,8 @@ RUN bundle install && \
 COPY . .
 
 # Add a command to stop any existing server process
-RUN rm -f tmp/pids/server.pid || true
+RUN kill -9 $(cat /rails/tmp/pids/server.pid) || true && \
+    rm -f /rails/tmp/pids/server.pid || true
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
