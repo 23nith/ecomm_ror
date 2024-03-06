@@ -1,8 +1,4 @@
 
-Sure, I'll modify the Docker entrypoint script to implement the logic for handling the scenario where a server process is already running. Here's the modified script:
-
-bash
-Copy code
 #!/bin/bash -e
 
 pid_file="tmp/pids/server.pid"
