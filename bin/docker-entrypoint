@@ -16,11 +16,11 @@ check_server_running() {
 }
 
 # Check if the command is to start the Rails server
-if [ "$1" = "./bin/rails" ] && [ "$2" = "server" ]; then
+if [ "$1" = "bin/rails" ] && [ "$2" = "server" ]; then
     # Check if the server is already running
     check_server_running
     # Prepare the database
-    ./bin/rails db:prepare
+    bin/rails db:prepare
 fi
 
 # Execute the command
