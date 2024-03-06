@@ -9,7 +9,7 @@
 # and maximum; this matches the default thread size of Active Record.
 
 # Set the path to the PID file
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+pidfile "tmp/pids/server.pid"
 
 # Check if the PID file already exists
 if File.exist?(pidfile)
