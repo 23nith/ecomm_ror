@@ -8,23 +8,6 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 
-# Set the path to the PID file
-pidfile File.expand_path("tmp/pids/server.pid", __dir__)
-
-# Check if the PID file already exists
-if File.exist?(pidfile)
-  pid = File.read(pidfile).to_i
-  begin
-    # Check if the process with the PID is running
-    Process.kill(0, pid)
-    puts "Error: A server is already running (pid: #{pid}, file: #{pidfile})"
-    exit 1
-  rescue Errno::ESRCH
-    # The process with the PID is not running, remove the stale PID file
-    File.delete(pidfile)
-  end
-end
-
 max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
 threads min_threads_count, max_threads_count
