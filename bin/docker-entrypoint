@@ -1,8 +1,32 @@
+
+Sure, I'll modify the Docker entrypoint script to implement the logic for handling the scenario where a server process is already running. Here's the modified script:
+
+bash
+Copy code
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
+pid_file="tmp/pids/server.pid"
+
+# Function to check if the server is already running
+check_server_running() {
+    if [ -f "$pid_file" ]; then
+        pid=$(cat "$pid_file")
+        if ps -p $pid > /dev/null; then
+            echo "Error: A server is already running (pid: $pid, file: $pid_file)"
+            exit 1
+        else
+            rm "$pid_file"
+        fi
+    fi
+}
+
+# Check if the command is to start the Rails server
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  ./bin/rails db:prepare
+    # Check if the server is already running
+    check_server_running
+    # Prepare the database
+    ./bin/rails db:prepare
 fi
 
+# Execute the command
 exec "${@}"
