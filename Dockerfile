@@ -30,6 +30,9 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
+# Add a command to stop any existing server process
+RUN rm -f tmp/pids/server.pid || true
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
