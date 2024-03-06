@@ -1,4 +1,3 @@
-
 #!/bin/bash -e
 
 pid_file="tmp/pids/server.pid"
@@ -17,7 +16,7 @@ check_server_running() {
 }
 
 # Check if the command is to start the Rails server
-if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+if [ "$1" = "./bin/rails" ] && [ "$2" = "server" ]; then
     # Check if the server is already running
     check_server_running
     # Prepare the database
@@ -25,4 +24,4 @@ if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
 fi
 
 # Execute the command
-exec "${@}"
+exec "$@"
