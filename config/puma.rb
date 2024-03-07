@@ -8,17 +8,20 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 
+# Set the path to the PID file
+pidfile "tmp/pids/server.pid"
+
 # Check if the PID file already exists
-if File.exist?(ENV["PIDFILE"])
-  pid = File.read(ENV["PIDFILE"]).to_i
+if File.exist?(pidfile)
+  pid = File.read(pidfile).to_i
   begin
     # Check if the process with the PID is running
     Process.kill(0, pid)
-    puts "Error: A server is already running (pid: #{pid}, file: #{ENV["PIDFILE"]})"
+    puts "Error: A server is already running (pid: #{pid}, file: #{pidfile})"
     exit 1
   rescue Errno::ESRCH
     # The process with the PID is not running, remove the stale PID file
-    File.delete(ENV["PIDFILE"])
+    File.delete(pidfile)
   end
 end
 
