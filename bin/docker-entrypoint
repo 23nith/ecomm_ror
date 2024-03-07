@@ -3,19 +3,20 @@
 # Export the PIDFILE environment variable
 export PIDFILE="tmp/pids/server.pid"
 
-# Function to check if a process exists by PID
-process_exists() {
-    kill -0 "$1" 2>/dev/null
-}
+# # Function to check if a process exists by PID
+# process_exists() {
+#     kill -0 "$1" 2>/dev/null
+# }
 
-# If process with PID 7 exists, kill it
-if process_exists 7; then
-    echo "Killing process with PID 7..."
-    kill 7
-fi
+# # If process with PID 7 exists, kill it
+# if process_exists 7; then
+#     echo "Killing process with PID 7..."
+#     kill 7
+# fi
 
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  echo "db:prepare executing..."
   ./bin/rails db:prepare
 fi
 
