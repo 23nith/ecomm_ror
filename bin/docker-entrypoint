@@ -31,8 +31,8 @@ if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
     monitor_master_process &
     monitor_pid=$!
 
-    # Wait for either the Rails server or the monitor process to exit
-    wait -n "$rails_pid" "$monitor_pid"
+    # Wait for both the Rails server and the monitor process to exit
+    wait "$rails_pid" "$monitor_pid"
 else
     # If not running the Rails server, simply execute the command
     exec "${@}"
