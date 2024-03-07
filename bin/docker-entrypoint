@@ -16,23 +16,21 @@ kill_process() {
     fi
 }
 
+# Function to handle cleanup when the script exits
+cleanup() {
+    master_pid=$(head -n 1 "$PIDFILE")
+    kill_process "$master_pid"
+}
+
+# Trap cleanup function on script exit
+trap cleanup EXIT
+
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-    ./bin/rails db:prepare &
-    rails_pid=$!
+    ./bin/rails db:prepare
 
-    # Function to monitor the master process and kill it if it crashes
-    monitor_master_process() {
-        wait "$rails_pid"
-        master_pid=$(head -n 1 "$PIDFILE")
-        kill_process "$master_pid"
-    }
-
-    monitor_master_process &
-    monitor_pid=$!
-
-    # Wait for both the Rails server and the monitor process to exit
-    wait "$rails_pid" "$monitor_pid"
+    # Start the Rails server
+    exec "${@}"
 else
     # If not running the Rails server, simply execute the command
     exec "${@}"
