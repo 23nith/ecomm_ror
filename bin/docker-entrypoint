@@ -1,37 +1,8 @@
 #!/bin/bash -e
 
-# Export the PIDFILE environment variable
-export PIDFILE="tmp/pids/server.pid"
-
-# Function to check if a process exists by PID
-process_exists() {
-    kill -0 "$1" 2>/dev/null
-}
-
-# Function to kill process by PID
-kill_process() {
-    if process_exists "$1"; then
-        echo "Killing process with PID $1..."
-        kill "$1"
-    fi
-}
-
-# Function to handle cleanup when the script exits
-cleanup() {
-    master_pid=$(head -n 1 "$PIDFILE")
-    kill_process "$master_pid"
-}
-
-# Trap cleanup function on script exit
-trap cleanup EXIT
-
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-    ./bin/rails db:prepare
-
-    # Start the Rails server
-    exec "${@}"
-else
-    # If not running the Rails server, simply execute the command
-    exec "${@}"
+  ./bin/rails db:prepare
 fi
+
+exec "${@}"
