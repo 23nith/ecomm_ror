@@ -63,6 +63,9 @@ Rails.application.configure do
   config.assets.quiet = true
   config.hosts << ".ngrok-free.app"
 
+  # Update references to use the new encryption keys from credentials.
+  config.secret_key_base = Rails.application.credentials.secret_key_base
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
